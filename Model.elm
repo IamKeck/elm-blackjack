@@ -81,9 +81,15 @@ type alias Card =
 infixl 4 <*>
 
 
+(<$>) : (a -> b) -> List a -> List b
+(<$>) =
+    List.map
+infixl 4 <$>
+
+
 deck : List Card
 deck =
-    List.map Card [ Spade, Heart, Club, Diamond ] <*> (List.range 1 13)
+    Card <$> [ Spade, Heart, Club, Diamond ] <*> (List.range 1 13)
 
 
 cardToPointAceAsOne : Card -> Int
