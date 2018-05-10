@@ -1,0 +1,25 @@
+{
+  "name": "elm-blackjack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd src && elm-make Main.elm --yes --output ../main.js",
+    "watch": "watch 'npm run build' ./src -p=/elm-stuff/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IamKeck/elm-blackjack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IamKeck/elm-blackjack/issues"
+  },
+  "homepage": "https://github.com/IamKeck/elm-blackjack#readme",
+  "devDependencies": {
+    "elm": "^0.18.0",
+    "watch": "^1.0.2"
+  }
+}
