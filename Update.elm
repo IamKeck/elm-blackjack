@@ -84,18 +84,22 @@ update msg model =
                         newPoint =
                             Model.calcValidPoint newPlayerHand
 
-                        newModel =
-                            { model | player = newPlayerHand, playersPoint = newPoint, deck = newDeck }
-
-                        finalModel =
+                        ( newStatus, result ) =
                             case newPoint of
                                 Nothing ->
-                                    { newModel | result = Just Model.YouBust, playersPoint = Nothing, status = Model.Over }
+                                    ( Model.Over, Just Model.YouBust )
 
-                                Just np ->
-                                    { newModel | playersPoint = Just np }
+                                Just _ ->
+                                    ( model.status, Nothing )
                     in
-                        ( finalModel, Cmd.none )
+                        { model
+                            | player = newPlayerHand
+                            , playersPoint = newPoint
+                            , deck = newDeck
+                            , status = newStatus
+                            , result = result
+                        }
+                            ! []
 
                 [] ->
                     ( { model | status = Model.Over, result = Just Model.Error }, Cmd.none )
