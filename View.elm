@@ -21,7 +21,7 @@ showCard c =
                     "♠"
 
                 Model.Diamond ->
-                    "◆"
+                    "♦"
     in
         suit ++ " " ++ (toString c.number)
 
