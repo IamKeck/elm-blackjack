@@ -49,15 +49,20 @@ view m =
 
                 playersCards =
                     List.reverse m.player |> List.map showCard |> String.join " "
+
+                playersPoint =
+                    Maybe.map toString m.playersPoint |> Maybe.withDefault "Busted!"
             in
                 div []
                     [ p []
                         [ text "Black Jack: Your Turn. Hit or Stand" ]
                     , div []
                         [ p []
-                            [ text ("Dealer's Card" ++ dealersCard) ]
+                            [ text ("Dealer's Card: " ++ dealersCard) ]
                         , p []
-                            [ text ("Player's Cards" ++ playersCards) ]
+                            [ text ("Player's Cards: " ++ playersCards) ]
+                        , p []
+                            [ text ("Player's Point: " ++ playersPoint) ]
                         ]
                     , div []
                         [ button [ onClick Model.Hit ]
@@ -74,6 +79,12 @@ view m =
 
                 playersCards =
                     List.reverse m.player |> List.map showCard |> String.join " "
+
+                dealersPoint =
+                    Maybe.map toString m.dealersPoint |> Maybe.withDefault "Busted!"
+
+                playersPoint =
+                    Maybe.map toString m.playersPoint |> Maybe.withDefault "Busted!"
 
                 result =
                     case m.result of
@@ -103,9 +114,13 @@ view m =
                         [ text ("Black Jack: Game Over " ++ result) ]
                     , div []
                         [ p []
-                            [ text ("Dealer's Cards" ++ dealersCards) ]
+                            [ text ("Dealer's Cards: " ++ dealersCards) ]
                         , p []
-                            [ text ("Player's Cards" ++ playersCards) ]
+                            [ text ("Player's Cards: " ++ playersCards) ]
+                        , p []
+                            [ text ("Dealer's Point: " ++ dealersPoint) ]
+                        , p []
+                            [ text ("Player's Point: " ++ playersPoint) ]
                         ]
                     , div []
                         [ button [ onClick Model.GameStart ]

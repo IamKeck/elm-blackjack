@@ -59,7 +59,17 @@ update msg model =
                             dealer =
                                 a :: c :: model.dealer
                         in
-                            ( { model | deck = xs, status = status, result = result, player = player, dealer = dealer }, Cmd.none )
+                            ( { model
+                                | deck = xs
+                                , status = status
+                                , result = result
+                                , player = player
+                                , dealer = dealer
+                                , playersPoint = Model.calcValidPoint player
+                                , dealersPoint = Model.calcValidPoint dealer
+                              }
+                            , Cmd.none
+                            )
 
                     _ ->
                         ( { model | status = Model.Over, result = Just Model.Error }, Cmd.none )
