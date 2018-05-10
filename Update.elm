@@ -85,7 +85,7 @@ update msg model =
                             Model.calcValidPoint newPlayerHand
 
                         newModel =
-                            { model | player = newPlayerHand, playersPoint = newPoint }
+                            { model | player = newPlayerHand, playersPoint = newPoint, deck = newDeck }
 
                         finalModel =
                             case newPoint of
