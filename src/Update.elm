@@ -119,26 +119,23 @@ update msg model =
 
 dealersTurn : Model.Model -> Model.Model
 dealersTurn m =
-    let
-        newPoint =
-            Model.calcValidPoint (m.dealer)
-    in
-        case newPoint of
-            Nothing ->
-                { m | dealersPoint = newPoint }
+    case m.dealersPoint of
+        Nothing ->
+            m
 
-            Just p ->
-                if p < 17 then
-                    case m.deck of
-                        nc :: nd ->
-                            dealersTurn
-                                { m
-                                    | dealer = nc :: m.dealer
-                                    , deck = nd
-                                    , dealersPoint = newPoint
-                                }
+        Just p ->
+            if p < 17 then
+                case m.deck of
+                    nc :: nd ->
+                        dealersTurn
+                            { m
+                                | dealer = nc :: m.dealer
+                                , deck = nd
+                                , dealersPoint =
+                                    Model.calcValidPoint (nc :: m.dealer)
+                            }
 
-                        [] ->
-                            { m | dealersPoint = newPoint }
-                else
-                    { m | dealersPoint = newPoint }
+                    [] ->
+                        m
+            else
+                m
