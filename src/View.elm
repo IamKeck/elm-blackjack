@@ -57,7 +57,7 @@ showResult result =
             "You've Busted!"
 
         Just Model.DealerBust ->
-            "Dealer Has Busted! You Win!"
+            "The Dealer Has Busted! You Win!"
 
         Just Model.Draw ->
             "Draw"
@@ -81,7 +81,7 @@ view m =
                     "Black Jack: Your Turn. Hit or Stand"
 
                 Model.Over ->
-                    "Black Jack: Game Over" ++ (showResult m.result)
+                    "Black Jack: Game Over: " ++ (showResult m.result)
 
         dealersCards =
             case m.status of
