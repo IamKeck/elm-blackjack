@@ -58,7 +58,7 @@ view m =
                         [ text "Black Jack: Your Turn. Hit or Stand" ]
                     , div []
                         [ p []
-                            [ text ("Dealer's Card: " ++ dealersCard) ]
+                            [ text ("Dealer's Card: " ++ dealersCard ++ " ?") ]
                         , p []
                             [ text ("Player's Cards: " ++ playersCards) ]
                         , p []
