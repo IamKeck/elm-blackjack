@@ -22,9 +22,6 @@ update msg model =
             let
                 newDeck =
                     Model.shuffleCards Model.deck xs
-
-                a =
-                    toString newDeck
             in
                 case newDeck of
                     a :: b :: c :: d :: xs ->
