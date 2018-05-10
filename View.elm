@@ -22,8 +22,16 @@ showCard c =
 
                 Model.Diamond ->
                     "♦"
+
+        number =
+            case c.number of
+                1 ->
+                    "A"
+
+                n ->
+                    toString n
     in
-        suit ++ " " ++ (toString c.number)
+        suit ++ " " ++ number
 
 
 view : Model.Model -> Html Model.Msg
