@@ -75,19 +75,15 @@ type alias Card =
     { suit : Suit, number : Int }
 
 
-allNums : List Int
-allNums =
-    List.range 1 13
-
-
-allSuits : List Suit
-allSuits =
-    [ Spade, Heart, Club, Diamond ]
+(<*>) : List (a -> b) -> List a -> List b
+(<*>) fs xs =
+    List.concatMap (\f -> List.map f xs) fs
+infixl 4 <*>
 
 
 deck : List Card
 deck =
-    List.concatMap (\s -> List.map (Card s) allNums) allSuits
+    List.map Card [ Spade, Heart, Club, Diamond ] <*> (List.range 1 13)
 
 
 cardToPointAceAsOne : Card -> Int
