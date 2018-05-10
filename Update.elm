@@ -106,14 +106,12 @@ update msg model =
                 newModel =
                     dealersTurn model
 
-                ( result, playersPoint, dealersPoint ) =
+                result =
                     Model.judge newModel
             in
                 ( { newModel
                     | status = Model.Over
                     , result = Just result
-                    , playersPoint = playersPoint
-                    , dealersPoint = dealersPoint
                   }
                 , Cmd.none
                 )
@@ -121,17 +119,26 @@ update msg model =
 
 dealersTurn : Model.Model -> Model.Model
 dealersTurn m =
-    case Model.calcValidPoint (m.dealer) of
-        Nothing ->
-            m
+    let
+        newPoint =
+            Model.calcValidPoint (m.dealer)
+    in
+        case newPoint of
+            Nothing ->
+                { m | dealersPoint = newPoint }
 
-        Just p ->
-            if p < 17 then
-                case m.deck of
-                    nc :: nd ->
-                        dealersTurn { m | dealer = nc :: m.dealer, deck = nd }
+            Just p ->
+                if p < 17 then
+                    case m.deck of
+                        nc :: nd ->
+                            dealersTurn
+                                { m
+                                    | dealer = nc :: m.dealer
+                                    , deck = nd
+                                    , dealersPoint = newPoint
+                                }
 
-                    [] ->
-                        m
-            else
-                m
+                        [] ->
+                            { m | dealersPoint = newPoint }
+                else
+                    { m | dealersPoint = newPoint }

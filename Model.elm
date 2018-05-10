@@ -42,22 +42,22 @@ initialModel =
     { deck = [], player = [], dealer = [], status = Title, result = Nothing, playersPoint = Nothing, dealersPoint = Nothing }
 
 
-judge : Model -> ( Result, Maybe Int, Maybe Int )
+judge : Model -> Result
 judge m =
-    case ( Debug.log "yp " (calcValidPoint m.player), Debug.log "dp" (calcValidPoint m.dealer) ) of
+    case ( m.playersPoint, m.dealersPoint ) of
         ( Nothing, dp ) ->
-            ( DealerWins, Nothing, dp )
+            DealerWins
 
         ( yp, Nothing ) ->
-            ( YouWin, yp, Nothing )
+            YouWin
 
         ( Just yp, Just dp ) ->
             if yp == dp then
-                ( Draw, Just yp, Just dp )
+                Draw
             else if yp > dp then
-                ( YouWin, Just yp, Just dp )
+                YouWin
             else
-                ( DealerWins, Just yp, Just dp )
+                DealerWins
 
 
 
