@@ -5,43 +5,54 @@ import Update
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Debug
 
 
-showCard : Model.Card -> String
+cardHtml : String -> Html.Html Model.Msg
+cardHtml image_name =
+    let
+        attr =
+            "url(./cards/" ++ image_name ++ ")"
+    in
+        div
+            [ class "card"
+            , style
+                [ ( "backgroundImage", attr ) ]
+            ]
+            []
+
+
+showCard : Model.Card -> Html.Html Model.Msg
 showCard c =
     let
         suit =
             case c.suit of
                 Model.Club ->
-                    "♣"
+                    "c"
 
                 Model.Heart ->
-                    "♥"
+                    "h"
 
                 Model.Spade ->
-                    "♠"
+                    "s"
 
                 Model.Diamond ->
-                    "♦"
+                    "d"
 
         number =
-            case c.number of
-                1 ->
-                    "A"
+            toString c.number
+                |> String.cons '0'
+                |> String.right 2
 
-                11 ->
-                    "J"
-
-                12 ->
-                    "Q"
-
-                13 ->
-                    "K"
-
-                n ->
-                    toString n
+        image_name =
+            suit ++ number ++ ".png"
     in
-        suit ++ " " ++ number
+        cardHtml image_name
+
+
+backCard : Html.Html Model.Msg
+backCard =
+    cardHtml "z01.png"
 
 
 showResult : Maybe Model.Result -> String
@@ -88,18 +99,17 @@ view m =
                 Model.UsersTurn ->
                     List.reverse m.dealer
                         |> List.head
-                        |> Maybe.andThen (showCard >> Just)
-                        |> Maybe.withDefault ""
-                        |> flip (++) " ?"
+                        |> Maybe.andThen (showCard >> (flip (::) [ backCard ]) >> Just)
+                        |> Maybe.withDefault ([ Html.text "" ])
 
                 Model.Over ->
-                    List.reverse m.dealer |> List.map showCard |> String.join " "
+                    List.reverse m.dealer |> List.map showCard
 
                 _ ->
-                    ""
+                    Html.text "" |> List.singleton
 
         playersCards =
-            List.reverse m.player |> List.map showCard |> String.join " "
+            List.reverse m.player |> List.map showCard
 
         playersPoint =
             Maybe.map toString m.playersPoint |> Maybe.withDefault "Busted!"
@@ -131,9 +141,15 @@ view m =
                 [ text statusText ]
             , div [ hidden <| m.status == Model.Title ]
                 [ p []
-                    [ text ("Dealer's Card: " ++ dealersCards) ]
+                    [ text "Dealer's Card: "
+                    , div [ class "cardHolder" ]
+                        dealersCards
+                    ]
                 , p []
-                    [ text ("Player's Cards: " ++ playersCards) ]
+                    [ text "Player's Cards: "
+                    , div [ class "cardHolder" ]
+                        playersCards
+                    ]
                 , p []
                     [ text ("Player's Point: " ++ playersPoint) ]
                 , p [ hidden <| m.status /= Model.Over ]
